@@ -35,3 +35,9 @@ target_link_libraries(sender pthread ${Boost_LIBRARIES})
 
 ADD_EXECUTABLE(receiver ${CMAKE_SOURCE_DIR}/receiver.cpp)
 target_link_libraries(receiver pthread ${Boost_LIBRARIES})
+
+ADD_EXECUTABLE(udp_async_serialization_sink ${CMAKE_SOURCE_DIR}/udp_async_serialization_sink.cpp)
+target_link_libraries(udp_async_serialization_sink pthread ${Boost_LIBRARIES})
+
+ADD_EXECUTABLE(udp_async_serialization_source ${CMAKE_SOURCE_DIR}/udp_async_serialization_source.cpp)
+target_link_libraries(udp_async_serialization_source pthread ${Boost_LIBRARIES})
