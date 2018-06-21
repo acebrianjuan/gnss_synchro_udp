@@ -21,9 +21,9 @@ int main(int argc, char* argv[])
     int i = 1;
     while (true)
     {
-    	std::cout << "Gnss_Synchro packet number " << i << std::endl;
     	udp_source.read_gnss_synchro();
 
+    	std::cout << "Gnss_Synchro packet number " << i << std::endl;
     	i++;
     }
   }
