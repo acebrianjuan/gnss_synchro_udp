@@ -30,14 +30,13 @@ include_directories(
         ${Boost_INCLUDE_DIRS}
      )
 
-ADD_EXECUTABLE(sender ${CMAKE_SOURCE_DIR}/sender.cpp)
-target_link_libraries(sender pthread ${Boost_LIBRARIES})
 
-ADD_EXECUTABLE(receiver ${CMAKE_SOURCE_DIR}/receiver.cpp)
-target_link_libraries(receiver pthread ${Boost_LIBRARIES})
+add_library(udp_lib ${CMAKE_SOURCE_DIR}/gnss_synchro_udp_sink.cc
+                                        gnss_synchro_udp_source.cc)
 
-ADD_EXECUTABLE(udp_async_serialization_sink ${CMAKE_SOURCE_DIR}/udp_async_serialization_sink.cpp)
-target_link_libraries(udp_async_serialization_sink pthread ${Boost_LIBRARIES})
+ADD_EXECUTABLE(test_write ${CMAKE_SOURCE_DIR}/test_write.cc)
+target_link_libraries(test_write udp_lib pthread ${Boost_LIBRARIES})
 
-ADD_EXECUTABLE(udp_async_serialization_source ${CMAKE_SOURCE_DIR}/udp_async_serialization_source.cpp)
-target_link_libraries(udp_async_serialization_source pthread ${Boost_LIBRARIES})
+ADD_EXECUTABLE(test_receive ${CMAKE_SOURCE_DIR}/test_receive.cc)
+target_link_libraries(test_receive udp_lib pthread ${Boost_LIBRARIES})
+
