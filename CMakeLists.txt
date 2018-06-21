@@ -37,6 +37,6 @@ add_library(udp_lib ${CMAKE_SOURCE_DIR}/gnss_synchro_udp_sink.cc
 ADD_EXECUTABLE(test_write ${CMAKE_SOURCE_DIR}/test_write.cc)
 target_link_libraries(test_write udp_lib pthread ${Boost_LIBRARIES})
 
-ADD_EXECUTABLE(test_receive ${CMAKE_SOURCE_DIR}/test_receive.cc)
-target_link_libraries(test_receive udp_lib pthread ${Boost_LIBRARIES})
+ADD_EXECUTABLE(test_read ${CMAKE_SOURCE_DIR}/test_read.cc)
+target_link_libraries(test_read udp_lib pthread ${Boost_LIBRARIES})
 
