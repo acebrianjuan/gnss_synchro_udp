@@ -9,13 +9,13 @@ int main(int argc, char* argv[])
   try
   {
     // Check command line arguments.
-    if (argc != 3)
+    if (argc < 3)
     {
       std::cerr << "Usage: gnss_synchro_udp_sink <address> <port>" << std::endl;
-      return 1;
+      return false;
     }
 
-    unsigned short port = boost::lexical_cast<unsigned short>(argv[2]);
+	std::vector<Gnss_Synchro> stocks;
     Gnss_Synchro gnss_synchro;
 
 	gnss_synchro.System='G';       //!< Set by Channel::set_signal(Gnss_Signal gnss_signal)
@@ -52,9 +52,15 @@ int main(int argc, char* argv[])
 	gnss_synchro. Flag_valid_pseudorange=0;  //!< Set by Observables processing block
 
 
-	std::vector<Gnss_Synchro> stocks;
+    unsigned short port = boost::lexical_cast<unsigned short>(argv[argc-1]);
+    std::vector<std::string> addresses;
 
-    Gnss_Synchro_Udp_Sink udp_sink(argv[1], port);
+    for(int i = 1; i < argc - 1; i++)
+    {
+        addresses.push_back(argv[i]);
+    }
+
+    Gnss_Synchro_Udp_Sink udp_sink(addresses, port);
 
     int id = 0;
     for(int i = 1; i <= 1000; i++)
@@ -80,5 +86,5 @@ int main(int argc, char* argv[])
     std::cerr << e.what() << std::endl;
   }
 
-  return 0;
+  return true;
 }

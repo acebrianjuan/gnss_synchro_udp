@@ -4,11 +4,13 @@
 #include <sstream>
 #include <iostream>
 
-Gnss_Synchro_Udp_Sink::Gnss_Synchro_Udp_Sink(std::string address, const unsigned short &port) : socket{io_service},
-endpoint{boost::asio::ip::address::from_string(address, error), port}
+Gnss_Synchro_Udp_Sink::Gnss_Synchro_Udp_Sink(std::vector<std::string> addresses, const unsigned short &port) : socket{io_service}
 {
-	socket.open(endpoint.protocol(), error);
-	socket.connect(endpoint, error);
+	for (auto address : addresses)
+	{
+		boost::asio::ip::udp::endpoint endpoint(boost::asio::ip::address::from_string(address, error), port);
+		endpoints.push_back(endpoint);
+	}
 }
 
 bool Gnss_Synchro_Udp_Sink::write_gnss_synchro(std::vector<Gnss_Synchro> stocks)
@@ -18,14 +20,19 @@ bool Gnss_Synchro_Udp_Sink::write_gnss_synchro(std::vector<Gnss_Synchro> stocks)
 	oa << stocks;
 	std::string outbound_data = archive_stream.str();
 
-	try
+	for (auto endpoint : endpoints)
 	{
-		socket.send(boost::asio::buffer(outbound_data));
-	}
-	catch (boost::system::system_error const& e)
-	{
-		return false;
-	}
+		socket.open(endpoint.protocol(), error);
+		socket.connect(endpoint, error);
 
+		try
+		{
+			socket.send(boost::asio::buffer(outbound_data));
+		}
+		catch (boost::system::system_error const& e)
+		{
+			return false;
+		}
+	}
 	return true;
 }
