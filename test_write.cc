@@ -30,26 +30,26 @@ int main(int argc, char* argv[])
 	gnss_synchro.Acq_samplestamp_samples=0;     //!< Set by Acquisition processing block
 	gnss_synchro.Flag_valid_acquisition=0;      //!< Set by Acquisition processing block
 	//Tracking
-	gnss_synchro.fs=0;                          //!< Set by Tracking processing block
-	gnss_synchro. Prompt_I=0;                   //!< Set by Tracking processing block
-	gnss_synchro. Prompt_Q=0;                   //!< Set by Tracking processing block
-	gnss_synchro. CN0_dB_hz=0;                  //!< Set by Tracking processing block
-	gnss_synchro. Carrier_Doppler_hz=0;         //!< Set by Tracking processing block
-	gnss_synchro. Carrier_phase_rads=0;         //!< Set by Tracking processing block
-	gnss_synchro. Code_phase_samples=0;         //!< Set by Tracking processing block
-	gnss_synchro.Tracking_sample_counter=0;     //!< Set by Tracking processing block
+	gnss_synchro.fs=0;                         //!< Set by Tracking processing block
+	gnss_synchro.Prompt_I=0;                   //!< Set by Tracking processing block
+	gnss_synchro.Prompt_Q=0;                   //!< Set by Tracking processing block
+	gnss_synchro.CN0_dB_hz=0;                  //!< Set by Tracking processing block
+	gnss_synchro.Carrier_Doppler_hz=0;         //!< Set by Tracking processing block
+	gnss_synchro.Carrier_phase_rads=0;         //!< Set by Tracking processing block
+	gnss_synchro.Code_phase_samples=0;         //!< Set by Tracking processing block
+	gnss_synchro.Tracking_sample_counter=0;    //!< Set by Tracking processing block
 
-	gnss_synchro. Flag_valid_symbol_output=0;   //!< Set by Tracking processing block
-	gnss_synchro. correlation_length_ms=0;      //!< Set by Tracking processing block
+	gnss_synchro.Flag_valid_symbol_output=0;   //!< Set by Tracking processing block
+	gnss_synchro.correlation_length_ms=0;      //!< Set by Tracking processing block
 
 	//Telemetry Decoder
-	gnss_synchro. Flag_valid_word=0;            //!< Set by Telemetry Decoder processing block
-	gnss_synchro. TOW_at_current_symbol_s=0;    //!< Set by Telemetry Decoder processing block
+	gnss_synchro.Flag_valid_word=0;            //!< Set by Telemetry Decoder processing block
+	gnss_synchro.TOW_at_current_symbol_s=0;    //!< Set by Telemetry Decoder processing block
 
 	// Observables
-	gnss_synchro. Pseudorange_m=0;           //!< Set by Observables processing block
-	gnss_synchro. RX_time=0;                 //!< Set by Observables processing block
-	gnss_synchro. Flag_valid_pseudorange=0;  //!< Set by Observables processing block
+	gnss_synchro.Pseudorange_m=0;           //!< Set by Observables processing block
+	gnss_synchro.RX_time=0;                 //!< Set by Observables processing block
+	gnss_synchro.Flag_valid_pseudorange=0;  //!< Set by Observables processing block
 
 
     unsigned short port = boost::lexical_cast<unsigned short>(argv[argc-1]);
@@ -62,21 +62,126 @@ int main(int argc, char* argv[])
 
     Gnss_Synchro_Udp_Sink udp_sink(addresses, port);
 
-    int id = 0;
+    // Test 1:
+    for(int id = 0; id < 4; id++)
+    {
+    	for(int i = 1; i <= 1000; i++)
+    	{
+    		gnss_synchro.Channel_ID = id;
+    		gnss_synchro.CN0_dB_hz = i;
+
+    		stocks.push_back(gnss_synchro);
+    		udp_sink.write_gnss_synchro(stocks);
+    		stocks.clear();
+
+    		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    	}
+    }
+
+    // Test 2:
     for(int i = 1; i <= 1000; i++)
     {
-	  gnss_synchro.Channel_ID = id;
-	  stocks.push_back(gnss_synchro);
-      id++;
+    	gnss_synchro.Channel_ID = 4;
+    	gnss_synchro.CN0_dB_hz = i;
 
-      if(i % 4 == 0)
-      {
-    	  udp_sink.write_gnss_synchro(stocks);
-    	  stocks.clear();
-    	  id = 0;
+    	stocks.push_back(gnss_synchro);
 
-    	  std::this_thread::sleep_for(std::chrono::milliseconds(1));
-      }
+    	udp_sink.write_gnss_synchro(stocks);
+    	stocks.clear();
+
+    	std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    for(int i = 1; i <= 1000; i++)
+        {
+        	gnss_synchro.Channel_ID = 4;
+        	gnss_synchro.CN0_dB_hz = i;
+
+        	stocks.push_back(gnss_synchro);
+
+        	gnss_synchro.Channel_ID = 5;
+        	gnss_synchro.CN0_dB_hz = i;
+
+        	stocks.push_back(gnss_synchro);
+
+        	udp_sink.write_gnss_synchro(stocks);
+        	stocks.clear();
+
+        	std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    for(int i = 1; i <= 1000; i++)
+        {
+    	    gnss_synchro.Channel_ID = 4;
+    	    gnss_synchro.CN0_dB_hz = i;
+
+    	    stocks.push_back(gnss_synchro);
+
+    	    gnss_synchro.Channel_ID = 5;
+    	    gnss_synchro.CN0_dB_hz = i;
+
+    	    stocks.push_back(gnss_synchro);
+
+    	    gnss_synchro.Channel_ID = 6;
+    	    gnss_synchro.CN0_dB_hz = i;
+
+    	    stocks.push_back(gnss_synchro);
+
+    	    udp_sink.write_gnss_synchro(stocks);
+    	    stocks.clear();
+
+    	    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    for(int i = 1; i <= 1000; i++)
+        {
+    	    gnss_synchro.Channel_ID = 4;
+    	    gnss_synchro.CN0_dB_hz = i;
+
+    	    stocks.push_back(gnss_synchro);
+
+    	    gnss_synchro.Channel_ID = 5;
+    	    gnss_synchro.CN0_dB_hz = i;
+
+    	    stocks.push_back(gnss_synchro);
+
+    	    gnss_synchro.Channel_ID = 6;
+    	    gnss_synchro.CN0_dB_hz = i;
+
+    	    stocks.push_back(gnss_synchro);
+
+    	    gnss_synchro.Channel_ID = 7;
+    	    gnss_synchro.CN0_dB_hz = i;
+
+    	    stocks.push_back(gnss_synchro);
+
+    	    udp_sink.write_gnss_synchro(stocks);
+    	    stocks.clear();
+
+    	    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+
+    // Test 3:
+    int id = 0;
+    int j = 1;
+    for(int i = 1; i <= 8000; i++)
+    {
+    	gnss_synchro.Channel_ID = id;
+    	gnss_synchro.CN0_dB_hz = j;
+
+    	stocks.push_back(gnss_synchro);
+    	id++;
+
+    	if(i % 4 == 0)
+    	{
+    		udp_sink.write_gnss_synchro(stocks);
+    		stocks.clear();
+
+    		if (i % 8 == 0)
+    		{
+    			id = 0;
+    			j++;
+    		}
+
+    		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    	}
     }
   }
   catch (std::exception& e)
