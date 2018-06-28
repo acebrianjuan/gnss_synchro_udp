@@ -1,5 +1,5 @@
 # gnss_synchro_udp
-Serializaion example of Gnss_Synchro objects over UDP
+Serialization example of Gnss_Synchro objects over UDP
 
 **Server**
 ---
