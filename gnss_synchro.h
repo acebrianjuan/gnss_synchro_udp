@@ -73,33 +73,33 @@ public:
     double RX_time;               //!< Set by Observables processing block
     bool Flag_valid_pseudorange;  //!< Set by Observables processing block
 
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version)
     {
-      // Simply list all the fields to be serialized/deserialized.
-      ar & System;
-      ar & Signal;
-      ar & PRN;
-      ar & Channel_ID;
-      ar & Acq_delay_samples;
-      ar & Acq_doppler_hz;
-      ar & Acq_samplestamp_samples;
-      ar & Flag_valid_acquisition;
-      ar & fs;
-      ar & Prompt_I;
-      ar & Prompt_Q;
-      ar & CN0_dB_hz;
-      ar & Carrier_Doppler_hz;
-      ar & Carrier_phase_rads;
-      ar & Code_phase_samples;
-      ar & Tracking_sample_counter;
-      ar & Flag_valid_symbol_output;
-      ar & correlation_length_ms;
-      ar & Flag_valid_word;
-      ar & TOW_at_current_symbol_s;
-      ar & Pseudorange_m;
-      ar & RX_time;
-      ar & Flag_valid_pseudorange;
+        // Simply list all the fields to be serialized/deserialized.
+        ar& System;
+        ar& Signal;
+        ar& PRN;
+        ar& Channel_ID;
+        ar& Acq_delay_samples;
+        ar& Acq_doppler_hz;
+        ar& Acq_samplestamp_samples;
+        ar& Flag_valid_acquisition;
+        ar& fs;
+        ar& Prompt_I;
+        ar& Prompt_Q;
+        ar& CN0_dB_hz;
+        ar& Carrier_Doppler_hz;
+        ar& Carrier_phase_rads;
+        ar& Code_phase_samples;
+        ar& Tracking_sample_counter;
+        ar& Flag_valid_symbol_output;
+        ar& correlation_length_ms;
+        ar& Flag_valid_word;
+        ar& TOW_at_current_symbol_s;
+        ar& Pseudorange_m;
+        ar& RX_time;
+        ar& Flag_valid_pseudorange;
     }
 };
 
