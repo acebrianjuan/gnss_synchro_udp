@@ -74,13 +74,14 @@ int main(int argc, char* argv[])
             gnss_synchro.correlation_length_ms = 0;     //!< Set by Tracking processing block
 
             //Telemetry Decoder
-            gnss_synchro.Flag_valid_word = 0;          //!< Set by Telemetry Decoder processing block
-            gnss_synchro.TOW_at_current_symbol_s = 0;  //!< Set by Telemetry Decoder processing block
+            gnss_synchro.Flag_valid_word = 0;           //!< Set by Telemetry Decoder processing block
+            gnss_synchro.TOW_at_current_symbol_ms = 0;  //!< Set by Telemetry Decoder processing block
 
             // Observables
             gnss_synchro.Pseudorange_m = 0;           //!< Set by Observables processing block
             gnss_synchro.RX_time = 0;                 //!< Set by Observables processing block
             gnss_synchro.Flag_valid_pseudorange = 0;  //!< Set by Observables processing block
+            gnss_synchro.interp_TOW_ms = 0;           //!< Set by Observables processing block
 
 
             unsigned short port = boost::lexical_cast<unsigned short>(argv[argc - 1]);

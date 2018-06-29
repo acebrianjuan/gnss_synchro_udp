@@ -65,18 +65,21 @@ public:
     int correlation_length_ms;      //!< Set by Tracking processing block
 
     //Telemetry Decoder
-    bool Flag_valid_word;            //!< Set by Telemetry Decoder processing block
-    double TOW_at_current_symbol_s;  //!< Set by Telemetry Decoder processing block
+    bool Flag_valid_word;                   //!< Set by Telemetry Decoder processing block
+    unsigned int TOW_at_current_symbol_ms;  //!< Set by Telemetry Decoder processing block
 
     // Observables
     double Pseudorange_m;         //!< Set by Observables processing block
     double RX_time;               //!< Set by Observables processing block
     bool Flag_valid_pseudorange;  //!< Set by Observables processing block
+    double interp_TOW_ms;         //!< Set by Observables processing block
+
 
     template <class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
         // Simply list all the fields to be serialized/deserialized.
+        // Satellite and signal info
         ar& System;
         ar& Signal;
         ar& PRN;
@@ -85,6 +88,7 @@ public:
         ar& Acq_doppler_hz;
         ar& Acq_samplestamp_samples;
         ar& Flag_valid_acquisition;
+        //Tracking
         ar& fs;
         ar& Prompt_I;
         ar& Prompt_Q;
@@ -95,11 +99,14 @@ public:
         ar& Tracking_sample_counter;
         ar& Flag_valid_symbol_output;
         ar& correlation_length_ms;
+        //Telemetry Decoder
         ar& Flag_valid_word;
-        ar& TOW_at_current_symbol_s;
+        ar& TOW_at_current_symbol_ms;
+        // Observables
         ar& Pseudorange_m;
         ar& RX_time;
         ar& Flag_valid_pseudorange;
+        ar& interp_TOW_ms;
     }
 };
 
