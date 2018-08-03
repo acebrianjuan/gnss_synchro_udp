@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
             gnss_synchro.Acq_samplestamp_samples = 0;  //!< Set by Acquisition processing block
             gnss_synchro.Flag_valid_acquisition = 0;   //!< Set by Acquisition processing block
             //Tracking
-            gnss_synchro.fs = 0;                       //!< Set by Tracking processing block
+            gnss_synchro.fs = 2000000;                 //!< Set by Tracking processing block
             gnss_synchro.Prompt_I = 0;                 //!< Set by Tracking processing block
             gnss_synchro.Prompt_Q = 0;                 //!< Set by Tracking processing block
             gnss_synchro.CN0_dB_hz = 0;                //!< Set by Tracking processing block
@@ -95,9 +95,9 @@ int main(int argc, char* argv[])
             Gnss_Synchro_Udp_Sink udp_sink(addresses, port);
 
             // Test 1:
-            for (int id = 0; id < 4; id++)
+            for (int i = 1; i <= 20000; i++)
                 {
-                    for (int i = 1; i <= 1000; i++)
+                    for (int id = 0; id < 8; id++)
                         {
                             gnss_synchro.Channel_ID = id;
                             gnss_synchro.CN0_dB_hz = i;
@@ -105,115 +105,8 @@ int main(int argc, char* argv[])
                             stocks.push_back(gnss_synchro);
                             udp_sink.write_gnss_synchro(stocks);
                             stocks.clear();
-
-                            std::this_thread::sleep_for(std::chrono::milliseconds(1));
                         }
-                }
-
-            // Test 2:
-            for (int i = 1; i <= 1000; i++)
-                {
-                    gnss_synchro.Channel_ID = 4;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    udp_sink.write_gnss_synchro(stocks);
-                    stocks.clear();
-
                     std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                }
-            for (int i = 1; i <= 1000; i++)
-                {
-                    gnss_synchro.Channel_ID = 4;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    gnss_synchro.Channel_ID = 5;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    udp_sink.write_gnss_synchro(stocks);
-                    stocks.clear();
-
-                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                }
-            for (int i = 1; i <= 1000; i++)
-                {
-                    gnss_synchro.Channel_ID = 4;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    gnss_synchro.Channel_ID = 5;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    gnss_synchro.Channel_ID = 6;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    udp_sink.write_gnss_synchro(stocks);
-                    stocks.clear();
-
-                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                }
-            for (int i = 1; i <= 1000; i++)
-                {
-                    gnss_synchro.Channel_ID = 4;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    gnss_synchro.Channel_ID = 5;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    gnss_synchro.Channel_ID = 6;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    gnss_synchro.Channel_ID = 7;
-                    gnss_synchro.CN0_dB_hz = i;
-
-                    stocks.push_back(gnss_synchro);
-
-                    udp_sink.write_gnss_synchro(stocks);
-                    stocks.clear();
-
-                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                }
-
-            // Test 3:
-            int id = 0;
-            int j = 1;
-            for (int i = 1; i <= 8000; i++)
-                {
-                    gnss_synchro.Channel_ID = id;
-                    gnss_synchro.CN0_dB_hz = j;
-
-                    stocks.push_back(gnss_synchro);
-                    id++;
-
-                    if (i % 4 == 0)
-                        {
-                            udp_sink.write_gnss_synchro(stocks);
-                            stocks.clear();
-
-                            if (i % 8 == 0)
-                                {
-                                    id = 0;
-                                    j++;
-                                }
-
-                            std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                        }
                 }
         }
     catch (std::exception& e)
