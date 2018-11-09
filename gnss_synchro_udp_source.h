@@ -38,8 +38,9 @@
 class Gnss_Synchro_Udp_Source
 {
 public:
-    Gnss_Synchro_Udp_Source(const unsigned short &port);
-    bool read_gnss_synchro();
+    Gnss_Synchro_Udp_Source(const unsigned short& port);
+    bool read_gnss_synchro(std::vector<Gnss_Synchro>& stocks);
+    bool print_gnss_synchro();
 
 private:
     boost::asio::io_service io_service;
@@ -47,6 +48,7 @@ private:
     boost::system::error_code error;
     boost::asio::ip::udp::endpoint endpoint;
     std::vector<Gnss_Synchro> stocks;
+    unsigned int pnum;
 };
 
 

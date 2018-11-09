@@ -1,7 +1,7 @@
 /*!
  * \file test_read.cc
  * \brief Terminal-based testing utility that listens on the specified udp
- * port and recovers incomming serialized gnss_synchro objects
+ * port and recovers incoming serialized gnss_synchro objects
  * \author Álvaro Cebrián Juan, 2018. acebrianjuan(at)gmail.com
  *
  * -------------------------------------------------------------------------
@@ -49,13 +49,9 @@ int main(int argc, char* argv[])
             unsigned short port = boost::lexical_cast<unsigned short>(argv[1]);
             Gnss_Synchro_Udp_Source udp_source(port);
 
-            int i = 1;
             while (true)
                 {
-                    udp_source.read_gnss_synchro();
-
-                    std::cout << "Gnss_Synchro packet number " << i << std::endl;
-                    i++;
+                    udp_source.print_gnss_synchro();
                 }
         }
     catch (std::exception& e)
